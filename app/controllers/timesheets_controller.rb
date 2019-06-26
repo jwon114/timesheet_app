@@ -4,6 +4,6 @@ class TimesheetsController < ApplicationController
   end
 
   def new
-
+    puts 'hello'
   end
 end
