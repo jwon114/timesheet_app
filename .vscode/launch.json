@@ -23,7 +23,7 @@
         "request": "launch",
         "cwd": "${workspaceRoot}",
         "useBundler": true,
-        "pathToBundler": "/Users/James/.rvm/gems/ruby-2.6.3/bin/bundle",
+        "pathToBundler": "/Users/James/.rvm/gems/ruby-2.6.3/wrappers/bundle",
         "pathToRDebugIDE": "/Users/James/.rvm/gems/ruby-2.6.3/gems/ruby-debug-ide-0.7.0",
         "program": "${workspaceRoot}/bin/rails",
         "args": [
@@ -31,6 +31,14 @@
             "-p",
             "3000"
         ]
+    },
+    {
+      "name": "Test::Unit - open test file",
+      "type": "Ruby",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",           
+      "program": "${file}",
+      "includes": ["test", "lib"]
     }
   ]
 }

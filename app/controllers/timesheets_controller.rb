@@ -6,4 +6,8 @@ class TimesheetsController < ApplicationController
   def new
     puts 'hello'
   end
+
+  def create
+    
+  end
 end

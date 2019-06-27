@@ -50,6 +50,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'ruby-debug-ide', '~> 0.7.0'
   gem 'debase', '~> 0.2.2'
+  gem 'pry', '~> 0.12.2'
 end
 
 group :test do
@@ -68,4 +69,3 @@ gem 'bootstrap', '~> 4.3.1'
 
 # jQuery Rails
 gem 'jquery-rails'
-
