@@ -4,9 +4,9 @@ require 'pry'
 class TimesheetTest < ActiveSupport::TestCase
   def setup
     @ts = Timesheet.new
-    @ts.date = '2019/06/27'
-    @ts.start_time = '14:00:00'
-    @ts.finish_time = '16:00:00'
+    @ts.date = Date.today
+    @ts.start_time = Time.now.seconds_since_midnight
+    @ts.finish_time = (Time.now + 1.hour).seconds_since_midnight
     @ts.calculated_amount = 100
   end
 
@@ -24,7 +24,7 @@ class TimesheetTest < ActiveSupport::TestCase
   end
 
   test '#new - date is not in the future' do
-    @ts.date = Date.tomorrow.to_s
+    @ts.date = Date.tomorrow
     assert_not @ts.valid?
   end
 
@@ -38,8 +38,10 @@ class TimesheetTest < ActiveSupport::TestCase
     assert_not @ts.valid?
   end
 
-  test '#new - finish time is after start time' do
-
+  test '#new - finish time is before start time' do
+    @ts.start_time = Time.now.seconds_since_midnight
+    @ts.finish_time = (Time.now - 1.hour).seconds_since_midnight
+    assert_not @ts.valid?
   end
 
   test '#new - calculations Monday, Wednesday, Friday' do
