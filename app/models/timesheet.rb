@@ -13,8 +13,4 @@ class Timesheet < ApplicationRecord
       errors.add(:finish_time, "Finish time cannot be before start time")
     end
   end
-
-  def time_to_seconds_since_midnight(time)
-    Time.parse(time).seconds_since_midnight
-  end
 end

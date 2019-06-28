@@ -5,6 +5,8 @@
 <h1>Timesheet Entries</h1>
 <ul>
   <% @timesheets.each do |ts| %>
-    <li><%= "#{ts.date}: #{ts.start_time} - #{ts.finish_time} $#{ts.calculated_amount}" %></li>
+    <% start_time = seconds_since_midnight_to_time(ts.start_time) %>
+    <% finish_time = seconds_since_midnight_to_time(ts.finish_time) %>
+    <li><%= "#{ts.date}: #{start_time} - #{finish_time} $#{ts.calculated_amount}" %></li>
   <% end %>
 </ul>
