@@ -4,7 +4,7 @@
 
 <h1>Timesheet Entries</h1>
 <ul>
-  <% @timesheet_entries.each do |ts| %>
+  <% @timesheets.each do |ts| %>
     <li><%= "#{ts.date}: #{ts.start_time} - #{ts.finish_time} $#{ts.calculated_amount}" %></li>
   <% end %>
 </ul>

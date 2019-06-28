@@ -69,3 +69,6 @@ gem 'bootstrap', '~> 4.3.1'
 
 # jQuery Rails
 gem 'jquery-rails'
+
+# Bootstrap Form
+gem "bootstrap_form", ">= 4.2.0"

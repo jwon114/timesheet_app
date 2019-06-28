@@ -5,58 +5,46 @@ class TimesheetTest < ActiveSupport::TestCase
   def setup
     @ts = Timesheet.new
     @ts.date = Date.today
-    @ts.start_time = Time.now.seconds_since_midnight
-    @ts.finish_time = (Time.now + 1.hour).seconds_since_midnight
+    @ts.start_time = 80086.463309
+    @ts.finish_time = 80089.294483
     @ts.calculated_amount = 100
   end
 
-  test '#index - retrieving all timesheets' do
-    assert_equal 2, Timesheet.all.size
-  end
-
-  test '#new - valid timesheet' do
-    assert @ts.valid?
-  end
-
-  test '#new - date is required' do
+  test 'date is required' do
     @ts.date = nil
-    assert_not @ts.valid?
+    assert @ts.invalid?
   end
 
-  test '#new - date is not in the future' do
-    @ts.date = Date.tomorrow
-    assert_not @ts.valid?
+  test 'date is not in the future' do
+    @ts.date = Date.today + 2.days
+    assert @ts.invalid?
   end
 
-  test '#new - start time is required' do
+  test 'start time is required' do
     @ts.start_time = nil
-    assert_not @ts.valid?
+    assert @ts.invalid?
   end
 
-  test '#new - finish time is required' do
+  test 'finish time is required' do
     @ts.finish_time = nil
-    assert_not @ts.valid?
+    assert @ts.invalid?
   end
 
-  test '#new - finish time is before start time' do
-    @ts.start_time = Time.now.seconds_since_midnight
-    @ts.finish_time = (Time.now - 1.hour).seconds_since_midnight
-    assert_not @ts.valid?
+  test 'finish time is before start time' do
+    @ts.start_time = 86186.012718
+    @ts.finish_time = 82604.518353 
+    assert @ts.invalid?
   end
 
-  test '#new - calculations Monday, Wednesday, Friday' do
-
-  end
-
-  test '#new - calculations Tuesday, Thursday' do
+  test 'calculations Monday, Wednesday, Friday' do
 
   end
 
-  test '#new - calculations weekend' do
+  test 'calculations Tuesday, Thursday' do
 
   end
 
-  test '#new - new timesheet is created' do
+  test 'calculations weekend' do
 
   end
 end
