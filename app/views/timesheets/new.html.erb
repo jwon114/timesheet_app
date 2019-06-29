@@ -1,3 +1,7 @@
+<a href="/timesheets">
+  <button>Timesheet Entries</button>
+</a>
+
 <h1>Create Timesheet Entry</h1>
 <%= bootstrap_form_for(@timesheet) do |f| %>
   <%= f.date_field :date, {max: Date.today, required: true} %>

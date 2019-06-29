@@ -1,6 +1,4 @@
 class TimesheetsController < ApplicationController
-  include TimeCalculations
-
   def index
     @timesheets = Timesheet.all
   end
@@ -10,11 +8,14 @@ class TimesheetsController < ApplicationController
   end
 
   def create
+    date = params.dig(:timesheet, :date)
+    start_time = params.dig(:timesheet, :start_time)
+    finish_time = params.dig(:timesheet, :finish_time)
+
     @timesheet = Timesheet.new
-    @timesheet.date = params.dig(:timesheet, :date)
-    @timesheet.start_time = time_to_seconds_since_midnight(params.dig(:timesheet, :start_time))
-    @timesheet.finish_time = time_to_seconds_since_midnight(params.dig(:timesheet, :finish_time))
-    @timesheet.calculated_amount = 100
+    @timesheet.date = date
+    @timesheet.start_time = Time.parse(start_time).seconds_since_midnight
+    @timesheet.finish_time = Time.parse(finish_time).seconds_since_midnight
 
     if @timesheet.save
       redirect_to "/timesheets"
