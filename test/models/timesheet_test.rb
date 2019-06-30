@@ -4,8 +4,8 @@ class TimesheetTest < ActiveSupport::TestCase
   def setup
     @ts = Timesheet.new
     @ts.date = Date.today
-    @ts.start_time = Time.parse("10:00:00").seconds_since_midnight
-    @ts.finish_time = Time.parse("12:00:00").seconds_since_midnight
+    @ts.start_time = Time.parse("03:00:00").seconds_since_midnight
+    @ts.finish_time = Time.parse("05:00:00").seconds_since_midnight
     @ts.calculated_amount = 100
   end
 
@@ -35,30 +35,36 @@ class TimesheetTest < ActiveSupport::TestCase
     assert @ts.invalid?
   end
 
-  # test 'no overlapping timesheets - start time is before new finish time and start time after new start time' do
-
-  # end
-
-  # test 'no overlapping timesheets - start time is before new start time and finish time is after new finish time' do
-
-  # end
-
-  # test 'no overlapping timesheets - finish time is after new start time and finish time is before new finish time' do
-
-  # end
-
-  # test 'no overlapping timesheets - start time is after new start time and finish time is before new finish time' do
-
-  # end
-
-  test 'no overlapping timesheets - start time is after new finish time' do
-
+  test 'no overlapping timesheets - start time is before new finish time and after new start time' do
+    @ts.start_time = Time.parse("09:00:00").seconds_since_midnight
+    @ts.finish_time = Time.parse("10:30:00").seconds_since_midnight
+    assert_equal @ts.invalid?
   end
 
-  test 'no overlapping timesheets -  finish time is before new start time' do
-
+  test 'no overlapping timesheets - start time is before new start time and finish time is after new finish time' do
+    @ts.start_time = Time.parse("10:15:00").seconds_since_midnight
+    @ts.finish_time = Time.parse("10:45:00").seconds_since_midnight
+    assert_equal @ts.invalid?
   end
-  
+
+  test 'no overlapping timesheets - finish time is after new start time and before new finish time' do
+    @ts.start_time = Time.parse("10:45:00").seconds_since_midnight
+    @ts.finish_time = Time.parse("11:30:00").seconds_since_midnight
+    assert_equal @ts.invalid?
+  end
+
+  test 'no overlapping timesheets - start time is after new start time and finish time is before new finish time' do
+    @ts.start_time = Time.parse("09:00:00").seconds_since_midnight
+    @ts.finish_time = Time.parse("11:45:00").seconds_since_midnight
+    assert_equal @ts.invalid?
+  end
+
+  test 'no overlapping timesheets - across two existing timesheets' do
+    @ts.start_time = Time.parse("09:00:00").seconds_since_midnight
+    @ts.finish_time = Time.parse("14:00:00").seconds_since_midnight
+    assert_equal @ts.invalid?
+  end
+
   test '#calculate_amount - Monday 10am - 5pm' do
     @ts.date = Date.parse("2019/04/15")
     @ts.start_time = Time.parse("10:00:00").seconds_since_midnight
