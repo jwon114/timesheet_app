@@ -36,7 +36,10 @@ class Timesheet < ApplicationRecord
   def cannot_have_overlapping_timesheet_entries
     Timesheet
       .where(date: date)
-      .where('start_time > ')
+      .where('start_time >= ? AND start_time <= ?', start_time, finish_time)
+      .where('start_time >= ? AND finish_time >= ?', start_time, finish_time)
+      .where('finish_time >= ? AND finish_time <= ?', start_time, finish_time)
+      .where('start_time <= ? AND finish_time >= ?', start_time, finish_time)
   end
 
   private
@@ -45,11 +48,11 @@ class Timesheet < ApplicationRecord
     day = date.strftime("%A")
     rates_hash = RATES_PER_HOUR.select { |key, hash| hash if key.include?(day) }.values.first
     
+    outside_rate = rates_hash[:outside_rate]
     if rates_hash.has_key?(:start_time) && rates_hash.has_key?(:finish_time)
       rates_start_time = rates_hash[:start_time]
       rates_finish_time = rates_hash[:finish_time]
       inside_rate = rates_hash[:inside_rate]
-      outside_rate = rates_hash[:outside_rate]
 
       # within the range
       if start_time >= rates_start_time && finish_time <= rates_finish_time
