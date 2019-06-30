@@ -34,44 +34,50 @@ class Timesheet < ApplicationRecord
   end
 
   def cannot_have_overlapping_timesheet_entries
-
+    Timesheet
+      .where(date: date)
+      .where('start_time > ')
   end
 
   private
 
   def calculate_amount
-    binding.pry
     day = date.strftime("%A")
-
     rates_hash = RATES_PER_HOUR.select { |key, hash| hash if key.include?(day) }.values.first
+    
+    if rates_hash.has_key?(:start_time) && rates_hash.has_key?(:finish_time)
+      rates_start_time = rates_hash[:start_time]
+      rates_finish_time = rates_hash[:finish_time]
+      inside_rate = rates_hash[:inside_rate]
+      outside_rate = rates_hash[:outside_rate]
 
-    rates_start_time = rates_hash[:start_time]
-    rates_finish_time = rates_hash[:finish_time]
-
-    if rates_hash.has_key?(:time_range)
       # within the range
       if start_time >= rates_start_time && finish_time <= rates_finish_time
-        amount = ((finish_time - start_time) / 3600) * rates_hash[:inside_rate]
+        amount = seconds_to_hours(finish_time - start_time) * inside_rate
       # less than rate start and less than rate finish
       elsif start_time < rates_start_time && finish_time <= rates_finish_time
-        outside_amount = ((rates_start_time - start_time) / 3600) * rates_hash[:outside_rate]
-        inside_amount = ((finish_time - rates_start_time) / 3600) * rates_hash[:inside_rate]
+        outside_amount = seconds_to_hours(rates_start_time - start_time) * outside_rate
+        inside_amount = seconds_to_hours(finish_time - rates_start_time) * inside_rate
         amount = outside_amount + inside_amount
       # greater than rate start and greater than rate finish
       elsif start_time >= rates_start_time && finish_time > rates_finish_time
-        inside_amount = ((rates_finish_time - start_time) / 3600) * rates_hash[:inside_amount]
-        outside_amount = ((finsh_time - rates_finish_time) / 3600) * rates_hash[:outside_rate]
+        inside_amount = seconds_to_hours(rates_finish_time - start_time) * inside_rate
+        outside_amount = seconds_to_hours(finish_time - rates_finish_time) * outside_rate
         amount = outside_amount + inside_amount
       # encompasses the range
       else
-        outside_amount = (((rates_start_time - start_time) / 3600) + ((finish_time - rates_finish_time) / 3600)) * rates_hash[:outside_rate]
-        inside_amount = ((rates_start_time - rates_finish_time) / 3600) * rates_hash[:inside_rate]
+        outside_amount = (seconds_to_hours(rates_start_time - start_time) + seconds_to_hours(finish_time - rates_finish_time)) * outside_rate
+        inside_amount = seconds_to_hours(rates_finish_time - rates_start_time) * inside_rate
         amount = outside_amount + inside_amount
       end
     else
-      amount = rates_hash[:outside_rate] * ((finish_time - start_time) / 3600)
+      amount = outside_rate * seconds_to_hours(finish_time - start_time)
     end
 
     return amount
+  end
+
+  def seconds_to_hours(seconds)
+    seconds.to_f / 3600
   end
 end

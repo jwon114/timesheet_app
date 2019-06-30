@@ -1,5 +1,4 @@
 require 'test_helper'
-require 'pry'
 
 class TimesheetTest < ActiveSupport::TestCase
   def setup
@@ -36,6 +35,30 @@ class TimesheetTest < ActiveSupport::TestCase
     assert @ts.invalid?
   end
 
+  # test 'no overlapping timesheets - start time is before new finish time and start time after new start time' do
+
+  # end
+
+  # test 'no overlapping timesheets - start time is before new start time and finish time is after new finish time' do
+
+  # end
+
+  # test 'no overlapping timesheets - finish time is after new start time and finish time is before new finish time' do
+
+  # end
+
+  # test 'no overlapping timesheets - start time is after new start time and finish time is before new finish time' do
+
+  # end
+
+  test 'no overlapping timesheets - start time is after new finish time' do
+
+  end
+
+  test 'no overlapping timesheets -  finish time is before new start time' do
+
+  end
+  
   test '#calculate_amount - Monday 10am - 5pm' do
     @ts.date = Date.parse("2019/04/15")
     @ts.start_time = Time.parse("10:00:00").seconds_since_midnight
@@ -47,21 +70,20 @@ class TimesheetTest < ActiveSupport::TestCase
     @ts.date = Date.parse("2019/04/16")
     @ts.start_time = Time.parse("12:00:00").seconds_since_midnight
     @ts.finish_time = Time.parse("20:15:00").seconds_since_midnight
-    assert_equal 238.78, @ts.send(:calculate_amount)
+    assert_equal 238.75, @ts.send(:calculate_amount)
   end
 
   test '#calculate_amount - Wednesday 4:00am - 9:30pm' do
     @ts.date = Date.parse("2019/04/17")
     @ts.start_time = Time.parse("04:00:00").seconds_since_midnight
     @ts.finish_time = Time.parse("21:30:00").seconds_since_midnight
-    assert_equal 445.50, @ts.send(:calculate_amount)
+    assert_equal 445.5, @ts.send(:calculate_amount)
   end
 
   test '#calculate_amount - Weekend 3:30pm - 8:00pm' do
     @ts.date = Date.parse("2019/04/20")
-    @ts.start_time = Time.parse("03:30:00").seconds_since_midnight
+    @ts.start_time = Time.parse("15:30:00").seconds_since_midnight
     @ts.finish_time = Time.parse("20:00:00").seconds_since_midnight
-    binding.pry
     assert_equal 211.50, @ts.send(:calculate_amount)
   end
 end
