@@ -10,13 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_26_134317) do
+ActiveRecord::Schema.define(version: 2019_07_01_143048) do
 
   create_table "timesheets", force: :cascade do |t|
     t.date "date", null: false
     t.float "start_time", null: false
     t.float "finish_time", null: false
-    t.float "calculated_amount", null: false
+    t.float "calculated_amount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

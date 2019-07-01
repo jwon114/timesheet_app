@@ -38,7 +38,6 @@ class TimesheetTest < ActiveSupport::TestCase
   test 'no overlapping timesheets - start time is before new finish time and after new start time' do
     @ts.start_time = Time.parse("09:00:00").seconds_since_midnight
     @ts.finish_time = Time.parse("10:30:00").seconds_since_midnight
-    byebug
     assert @ts.invalid?
   end
 
@@ -92,5 +91,13 @@ class TimesheetTest < ActiveSupport::TestCase
     @ts.start_time = Time.parse("15:30:00").seconds_since_midnight
     @ts.finish_time = Time.parse("20:00:00").seconds_since_midnight
     assert_equal 211.50, @ts.send(:calculate_amount)
+  end
+
+  test '#calculate_amount - Monday 11:00pm - 11:30pm' do
+    byebug
+    @ts.date = Date.parse("2019/04/22")
+    @ts.start_time = Time.parse("23:00:00").seconds_since_midnight
+    @ts.finish_time = Time.parse("23:30:00").seconds_since_midnight
+    assert_equal 16.50, @ts.send(:calculate_amount)
   end
 end
