@@ -1,12 +1,23 @@
-<a href="/timesheets/new">
-  <button>Create Timesheet Entry</button>
-</a>
-
-<h1>Timesheet Entries</h1>
-<ul>
-  <% @timesheets.each do |ts| %>
-    <% start_time = seconds_since_midnight_to_time(ts.start_time) %>
-    <% finish_time = seconds_since_midnight_to_time(ts.finish_time) %>
-    <li><%= "#{ts.date}: #{start_time} - #{finish_time} $#{ts.calculated_amount}" %></li>
-  <% end %>
-</ul>
+<div class="row">
+  <div class="col-md-12">
+    <a href="/timesheets/new">
+      <button class="btn btn-primary"><i class="fa fa-plus"></i> Create New Entry</button>
+    </a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="display-4">Timesheet Entries</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <ul>
+      <% @timesheets.each do |ts| %>
+        <% start_time = seconds_since_midnight_to_time(ts.start_time) %>
+        <% finish_time = seconds_since_midnight_to_time(ts.finish_time) %>
+        <li><%= "#{ts.date}: #{start_time} - #{finish_time} $#{ts.calculated_amount}" %></li>
+      <% end %>
+    </ul>
+  </div>
+</div>

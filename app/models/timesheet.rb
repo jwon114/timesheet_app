@@ -39,7 +39,7 @@ class Timesheet < ApplicationRecord
                                     .where('finish_time > ? AND ? > start_time', start_time, finish_time)
 
     if overlapping_timesheets.size > 0
-      errors.add(:finish_time, "There is an existing timesheet created at this date and time")
+      errors.add(:finish_time, "There is an existing timesheet that overlaps this date and time")
     end
   end
 

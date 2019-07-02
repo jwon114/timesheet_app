@@ -1,6 +1,6 @@
 class TimesheetsController < ApplicationController
   def index
-    @timesheets = Timesheet.all
+    @timesheets = Timesheet.order(:date)
   end
 
   def new
@@ -18,7 +18,7 @@ class TimesheetsController < ApplicationController
     @timesheet.finish_time = Time.parse(finish_time).seconds_since_midnight
 
     if @timesheet.save
-      redirect_to "/timesheets"
+      redirect_to '/timesheets'
     else
       render 'new'
     end

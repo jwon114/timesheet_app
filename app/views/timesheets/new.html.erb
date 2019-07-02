@@ -1,11 +1,22 @@
-<a href="/timesheets">
-  <button>Timesheet Entries</button>
-</a>
-
-<h1>Create Timesheet Entry</h1>
-<%= bootstrap_form_for(@timesheet) do |f| %>
-  <%= f.date_field :date, {max: Date.today, required: true} %>
-  <%= f.time_field :start_time, {step: 900, required: true} %>
-  <%= f.time_field :finish_time, {step: 900, required: true} %>
-  <%= f.submit "Create" %>
-<% end %>
+<div class="row">
+  <div class="col-md-12">
+    <a href="/timesheets">
+      <button class="btn btn-primary"><i class="fa fa-arrow-left"></i> Back to Entries</button>
+    </a>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <h1 class="display-4">Create Timesheet Entry</h1>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-4">
+    <%= bootstrap_form_for(@timesheet) do |f| %>
+      <%= f.date_field :date, {max: Date.today, required: true} %>
+      <%= f.time_field :start_time, {step: 900, required: true} %>
+      <%= f.time_field :finish_time, {step: 900, required: true} %>
+      <%= f.submit "Create" %>
+    <% end %>
+  </div>
+</div>

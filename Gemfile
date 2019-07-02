@@ -72,3 +72,7 @@ gem 'jquery-rails'
 
 # Bootstrap Form
 gem "bootstrap_form", ">= 4.2.0"
+
+# Font Awesome Rails
+gem "font-awesome-rails"
+
