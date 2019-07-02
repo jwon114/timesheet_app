@@ -36,7 +36,7 @@ class Timesheet < ApplicationRecord
   def cannot_have_overlapping_timesheet_entries
     overlapping_timesheets = Timesheet
                                     .where(date: date)
-                                    .where('finish_time >= ? AND ? >= start_time', start_time, finish_time)
+                                    .where('finish_time > ? AND ? > start_time', start_time, finish_time)
 
     if overlapping_timesheets.size > 0
       errors.add(:finish_time, "There is an existing timesheet created at this date and time")
@@ -50,42 +50,44 @@ class Timesheet < ApplicationRecord
     rates_hash = RATES_PER_HOUR.select { |key, hash| hash if key.include?(day) }.values.first
     
     outside_rate = rates_hash[:outside_rate]
-    if rates_hash.has_key?(:start_time) && rates_hash.has_key?(:finish_time)
-      rates_start_time = rates_hash[:start_time]
-      rates_finish_time = rates_hash[:finish_time]
-      inside_rate = rates_hash[:inside_rate]
+    rates_start_time = rates_hash[:start_time]
+    rates_finish_time = rates_hash[:finish_time]
+    inside_rate = rates_hash[:inside_rate]
+    
+    unless rates_start_time.present? && rates_finish_time.present?
+      return self.calculated_amount = outside_rate * seconds_to_hours(finish_time - start_time)
+    end
 
-      # TODO: rework possibilities
-      # within the range
-      if start_time >= rates_start_time && finish_time <= rates_finish_time
-        inside_amount = seconds_to_hours(finish_time - start_time) * inside_rate
-        outside_amount = 0
-      # less than rate start and less than rate finish
-      elsif start_time < rates_start_time && finish_time > rates_start_time
-        outside_amount = seconds_to_hours(rates_start_time - start_time) * outside_rate
-        inside_amount = seconds_to_hours(finish_time - rates_start_time) * inside_rate
-      # greater than rate start and greater than rate finish
-      elsif start_time >= rates_start_time && finish_time > rates_finish_time
-        inside_amount = seconds_to_hours(rates_finish_time - start_time) * inside_rate
-        outside_amount = seconds_to_hours(finish_time - rates_finish_time) * outside_rate
-      # outside of the rates
-      elsif start_time >= rates_finish_time || finish_time <= rates_start_time
-        inside_amount = 0
-        outside_amount = seconds_to_hours(finish_time - start_time) * outside_rate
-      # encompasses the range
-      else
-        outside_amount = (seconds_to_hours((rates_start_time - start_time) + (finish_time - rates_finish_time))) * outside_rate
-        inside_amount = seconds_to_hours(rates_finish_time - rates_start_time) * inside_rate
-      end
-      amount = outside_amount + inside_amount
-    else
-      amount = outside_rate * seconds_to_hours(finish_time - start_time)
+    unless overlaps_time_range?(rates_start_time, rates_finish_time, start_time, finish_time)
+      return self.calculated_amount = outside_rate * seconds_to_hours(finish_time - start_time)
     end
     
-    self.calculated_amount = amount
+    # within the range
+    if start_time >= rates_start_time && finish_time <= rates_finish_time
+      inside_amount = seconds_to_hours(finish_time - start_time) * inside_rate
+      outside_amount = 0
+    # less than rate start and less than rate finish
+    elsif (start_time < rates_start_time) && (finish_time <= rates_finish_time && finish_time > rates_start_time)
+      outside_amount = seconds_to_hours(rates_start_time - start_time) * outside_rate
+      inside_amount = seconds_to_hours(finish_time - rates_start_time) * inside_rate
+    # greater than rate start and greater than rate finish
+    elsif (start_time >= rates_start_time && start_time < rates_finish_time) && (finish_time > rates_finish_time)
+      inside_amount = seconds_to_hours(rates_finish_time - start_time) * inside_rate
+      outside_amount = seconds_to_hours(finish_time - rates_finish_time) * outside_rate
+    # encompasses the range
+    else
+      outside_amount = (seconds_to_hours((rates_start_time - start_time) + (finish_time - rates_finish_time))) * outside_rate
+      inside_amount = seconds_to_hours(rates_finish_time - rates_start_time) * inside_rate
+    end
+    
+    return self.calculated_amount = outside_amount + inside_amount
   end
 
   def seconds_to_hours(seconds)
     seconds.to_f / 3600
+  end
+
+  def overlaps_time_range?(range_start, range_finish, start, finish)
+    (finish > range_start) && (range_finish > start )
   end
 end
