@@ -6,16 +6,16 @@
 #
 one:
   date: <%= Date.today %>
-  start_time: <%= Time.parse("10:00:00").seconds_since_midnight %>
-  finish_time : <%= Time.parse("11:00:00").seconds_since_midnight %>
+  start_time: <%= Time.parse("10:00").seconds_since_midnight %>
+  finish_time : <%= Time.parse("11:00").seconds_since_midnight %>
   calculated_amount : 100
 two: 
   date: <%= Date.today %>
-  start_time: <%= Time.parse("12:00:00").seconds_since_midnight %>
-  finish_time : <%= Time.parse("14:00:00").seconds_since_midnight %>
+  start_time: <%= Time.parse("12:00").seconds_since_midnight %>
+  finish_time : <%= Time.parse("14:00").seconds_since_midnight %>
   calculated_amount : 200
 three:
   date: <%= Date.tomorrow %>
-  start_time: <%= Time.parse("16:00:00").seconds_since_midnight %>
-  finish_time : <%= Time.parse("20:00:00").seconds_since_midnight %>
+  start_time: <%= Time.parse("16:00").seconds_since_midnight %>
+  finish_time : <%= Time.parse("20:00").seconds_since_midnight %>
   calculated_amount: 300

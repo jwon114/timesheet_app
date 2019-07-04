@@ -5,14 +5,14 @@ class Timesheet < ApplicationRecord
 
   RATES_PER_HOUR = {
     %w(Monday Wednesday Friday) => {
-      start_time: Time.parse("07:00:00").seconds_since_midnight,
-      finish_time: Time.parse("19:00:00").seconds_since_midnight,
+      start_time: Time.parse("07:00").seconds_since_midnight,
+      finish_time: Time.parse("19:00").seconds_since_midnight,
       inside_rate: 22,
       outside_rate: 33
     },
     %w(Tuesday Thursday) => {
-      start_time: Time.parse("05:00:00").seconds_since_midnight,
-      finish_time: Time.parse("17:00:00").seconds_since_midnight,
+      start_time: Time.parse("05:00").seconds_since_midnight,
+      finish_time: Time.parse("17:00").seconds_since_midnight,
       inside_rate: 25,
       outside_rate: 35
     },

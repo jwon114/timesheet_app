@@ -13,11 +13,15 @@
 <div class="row">
   <div class="col-md-12">
     <ul class="list-group list-group-flush">
-      <% @timesheets.each do |ts| %>
-        <% start_time = seconds_since_midnight_to_time(ts.start_time) %>
-        <% finish_time = seconds_since_midnight_to_time(ts.finish_time) %>
-        <li class="list-group-item"><%= "#{ts.date}: #{start_time} - #{finish_time} $#{ts.calculated_amount}" %></li>
-      <% end %>
+      <% if @timesheets.blank? %>
+        <li class="list-group-item">No timesheets created</li>
+      <% else %>
+        <% @timesheets.each do |ts| %>
+          <% start_time = seconds_since_midnight_to_time(ts.start_time) %>
+          <% finish_time = seconds_since_midnight_to_time(ts.finish_time) %>
+          <li class="list-group-item"><%= "#{ts.date}: #{start_time} - #{finish_time} $#{ts.calculated_amount}" %></li>
+        <% end %>
+      <% end%>
     </ul>
   </div>
 </div>
