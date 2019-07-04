@@ -1,6 +1,6 @@
 class TimesheetsController < ApplicationController
   def index
-    @timesheets = Timesheet.order(:date)
+    @timesheets = Timesheet.all
   end
 
   def new

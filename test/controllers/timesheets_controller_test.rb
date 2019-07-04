@@ -4,8 +4,8 @@ class TimesheetsControllerTest < ActionDispatch::IntegrationTest
   def setup
     @ts = Timesheet.new
     @ts.date = Date.today
-    @ts.start_time = Time.parse("03:00:00").seconds_since_midnight
-    @ts.finish_time = Time.parse("05:00:00").seconds_since_midnight
+    @ts.start_time = Time.parse("03:00").seconds_since_midnight
+    @ts.finish_time = Time.parse("05:00").seconds_since_midnight
     @ts.calculated_amount = 100
   end
 

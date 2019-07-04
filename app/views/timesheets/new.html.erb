@@ -14,8 +14,8 @@
   <div class="col-md-4">
     <%= bootstrap_form_for(@timesheet) do |f| %>
       <%= f.date_field :date, {max: Date.today, required: true} %>
-      <%= f.time_field :start_time, {step: 900, required: true} %>
-      <%= f.time_field :finish_time, {step: 900, required: true} %>
+      <%= f.time_field :start_time, {required: true} %>
+      <%= f.time_field :finish_time, {required: true} %>
       <%= f.submit "Create" %>
     <% end %>
   </div>
