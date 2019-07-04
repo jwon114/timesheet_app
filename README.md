@@ -22,3 +22,6 @@
   * Always $47/hour
 
 ## Approach
+* Index page for displaying existing timesheets
+* New page for timesheet creation
+* TDD with model and controller tests
