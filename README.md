@@ -15,6 +15,10 @@ rails db:create
 ```
 rails db:migrate
 ```
+* Start rails server
+```
+rails s
+```
 
 ## Description
 * Creates timesheet entries based on Date, Start Time and Finish Time
