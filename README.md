@@ -1,5 +1,21 @@
 # Timesheet App
 
+## Setup
+* Download or clone repository
+* Ensure PostgreSQL is installed
+* Install gem dependencies
+```
+bundle install
+```
+* Create database
+```
+rails db:create
+```
+* Database migrations
+```
+rails db:migrate
+```
+
 ## Description
 * Creates timesheet entries based on Date, Start Time and Finish Time
 * One view showing the list of timesheets along with their dollar value
@@ -33,4 +49,5 @@
 
 ## Technologies
 * Ruby on Rails
+* PostgreSQL
 * Bootstrap
